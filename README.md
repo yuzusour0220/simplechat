@@ -25,37 +25,52 @@ Amazon Bedrock を使用したチャットボットアプリケーションで�
 
 ### 1. リポジトリのクローン
 
-```bash
+```
+bash
 git clone <repository-url>
-cd simplechat```
+cd simplechat
+```
 
 ### 2. CDK プロジェクトの依存関係
-```npm install```
+```
+npm install
+```
 
 ### 3. フロントエンドの依存関係
-```cd frontend
+```
+cd frontend
 npm install
-cd ..```
+cd ..
+```
 
 
 ### 4. AWS アカウントのブートストラップ（初回のみ）
-```npx cdk bootstrap```
+```
+npx cdk bootstrap
+```
+
 ### 5. フロントエンドのビルド 
 
-```cd frontend
+```
+cd frontend
 npm run build
-cd ..```
+cd ..
+```
 
 ### 6. CDK スタックのデプロイ
-```npx cdk deploy```
+```
+npx cdk deploy
+```
 
 デプロイが完了すると、以下の出力が表示されます：
 
-```CloudFront URL
+```
+CloudFront URL
 API Gateway URL
 Cognito User Pool ID
 Cognito User Pool Client ID
-使用している Bedrock モデル ID```
+使用している Bedrock モデル ID
+```
 
 ### 7. フロントエンド環境変数の設定
 frontend/.env ファイルを編集して、デプロイ出力から得られた値を設定します：
@@ -63,14 +78,16 @@ frontend/.env ファイルを編集して、デプロイ出力から得られた
 REACT_APP_API_ENDPOINT=<API_Gateway_URL>
 REACT_APP_USER_POOL_ID=<User_Pool_ID>
 REACT_APP_USER_POOL_CLIENT_ID=<User_Pool_Client_ID>
-REACT_APP_REGION=us-east-1```
-
+REACT_APP_REGION=us-east-1
+```
 
 ### 8. フロントエンドの再ビルドとデプロイ
-```cd frontend
+```
+cd frontend
 npm run build
 cd ..
-npx cdk deploy```
+npx cdk deploy
+```
 
 
 ### 9. アプリケーションへのアクセス
@@ -86,12 +103,14 @@ CloudFront URL にアクセスします
 別の Bedrock モデルの使用
 bin/bedrock-chatbot.ts ファイルを編集して、使用するモデルを変更できます：
 
-```typescript 
+```
+typescript 
 
 new BedrockChatbotStack(app, 'BedrockChatbotStack', {
   modelId: 'anthropic.claude-3-haiku-20240307-v1:0',
   // ...
-});```
+});
+```
 
 ### フロントエンドのカスタマイズ
 フロントエンドのコードは frontend/src ディレクトリにあります。React コンポーネントを編集してカスタマイズできます。
@@ -99,7 +118,9 @@ new BedrockChatbotStack(app, 'BedrockChatbotStack', {
 ### クリーンアップ
 プロジェクトのリソースを削除するには：
 
-```npx cdk destroy```
+```
+npx cdk destroy
+```
 
 
 ### トラブルシューティング
