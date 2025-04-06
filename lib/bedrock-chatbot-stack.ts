@@ -20,6 +20,7 @@ export class BedrockChatbotStack extends cdk.Stack {
     super(scope, id, props);
 
     const modelId = props?.modelId || 'us.amazon.nova-lite-v1:0';
+    //const modelId = props?.modelId || 'us.amazon.nova-micro-v1:0';
 
     // Cognito User Poolの作成 - メールアドレスをユーザー名として使用するように設定
     const userPool = new cognito.UserPool(this, 'ChatbotUserPool', {
@@ -143,7 +144,7 @@ export class BedrockChatbotStack extends cdk.Stack {
       destinationBucket: websiteBucket,
       distribution,
       distributionPaths: ['/*'],
-      memoryLimit: 512,
+      memoryLimit: 256,
     });
 
     // Lambda Role
@@ -172,7 +173,7 @@ export class BedrockChatbotStack extends cdk.Stack {
       handler: 'index.lambda_handler',
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
       timeout: cdk.Duration.seconds(30),
-      memorySize: 512,
+      memorySize: 128,
       role: lambdaRole,
       environment: {
         MODEL_ID: modelId,

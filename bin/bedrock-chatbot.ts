@@ -6,7 +6,7 @@ import { BedrockChatbotStack } from '../lib/bedrock-chatbot-stack';
 const app = new cdk.App();
 new BedrockChatbotStack(app, 'BedrockChatbotStack', {
   // モデルIDをオプションで指定可能
-  // modelId: 'anthropic.claude-3-haiku-20240307-v1:0',
+  // modelId: 'us.amazon.nova-lite-v1:0',
   
   // 環境変数から取得したリージョンを使用、またはデフォルトとしてus-east-1を使用
   env: { 

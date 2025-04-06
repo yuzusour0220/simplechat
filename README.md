@@ -4,7 +4,7 @@ Amazon Bedrock を使用したチャットボットアプリケーションで�
 
 ## 機能
 
-- Amazon Bedrock の LLM モデル（Nova Lite または Claude）を使用したチャット機能
+- Amazon Bedrock の LLM モデル（Nova Lite または micro）を使用したチャット機能
 - Amazon Cognito によるユーザー認証
 - API Gateway による安全な API アクセス
 - CloudFront + S3 によるフロントエンドホスティング
@@ -23,41 +23,40 @@ Amazon Bedrock を使用したチャットボットアプリケーションで�
 
 ## セットアップ手順
 
+
+### 重要: Bedrockモデルアクセス許可の設定
+
+このアプリケーションを使用するには、AWS Bedrockのモデルへのアクセス許可が必要です。
+以下の手順でモデルアクセスを有効にしてください：
+
+1. AWS Managementコンソールにログイン
+2. Amazon Bedrockサービスが利用可能なリージョンに移動
+3. 左側のナビゲーションから「モデルアクセス」を選択
+4. 使用するモデル（例：us.amazon.nova-lite-v1:0）の横にあるチェックボックスをオンにする
+5. 画面下部の「次へ」ボタンをクリックし、内容を確認の上、「送信」をクリックする
+
+* Cross Region Inferenceが有効となっているリージョンを推奨します。
+* アクセス許可がない状態で環境をセットアップした場合、チャットボットは500エラーを返します。
+
+
 ### 1. リポジトリのクローン
 
 ```
-bash
-git clone <repository-url>
+git clone https://github.com/keisskaws/simplechat
 cd simplechat
 ```
 
-### 2. CDK プロジェクトの依存関係
+### 2. CDK プロジェクトの依存関係 && フロントエンドのビルド
 ```
 npm install
 ```
 
-### 3. フロントエンドの依存関係
-```
-cd frontend
-npm install
-cd ..
-```
-
-
-### 4. AWS アカウントのブートストラップ（初回のみ）
+### 3. AWS アカウントのブートストラップ（初回のみ）
 ```
 npx cdk bootstrap
 ```
 
-### 5. フロントエンドのビルド 
-
-```
-cd frontend
-npm run build
-cd ..
-```
-
-### 6. CDK スタックのデプロイ
+### 4. CDK スタックのデプロイ
 ```
 npx cdk deploy
 ```
@@ -72,16 +71,15 @@ Cognito User Pool Client ID
 使用している Bedrock モデル ID
 ```
 
-### 7. フロントエンド環境変数の設定
+### 5. フロントエンド環境変数の設定
 frontend/.env ファイルを編集して、デプロイ出力から得られた値を設定します：
 ```
 REACT_APP_API_ENDPOINT=<API_Gateway_URL>
 REACT_APP_USER_POOL_ID=<User_Pool_ID>
 REACT_APP_USER_POOL_CLIENT_ID=<User_Pool_Client_ID>
-REACT_APP_REGION=us-east-1
 ```
 
-### 8. フロントエンドの再ビルドとデプロイ
+### 6. フロントエンドの再ビルドとデプロイ
 ```
 cd frontend
 npm run build
@@ -90,7 +88,7 @@ npx cdk deploy
 ```
 
 
-### 9. アプリケーションへのアクセス
+### 7. アプリケーションへのアクセス
 デプロイ出力に表示された CloudFront URL にアクセスしてアプリケーションを使用します。
 
 使用方法
@@ -107,7 +105,7 @@ bin/bedrock-chatbot.ts ファイルを編集して、使用するモデルを変
 typescript 
 
 new BedrockChatbotStack(app, 'BedrockChatbotStack', {
-  modelId: 'anthropic.claude-3-haiku-20240307-v1:0',
+  modelId: 'us.amazon.nova-micro-v1:0',
   // ...
 });
 ```
