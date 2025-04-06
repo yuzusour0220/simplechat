@@ -19,7 +19,7 @@ export class BedrockChatbotStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: BedrockChatbotStackProps) {
     super(scope, id, props);
 
-    const modelId = props?.modelId || 'amazon.nova-lite-v1:0';
+    const modelId = props?.modelId || 'us.amazon.nova-lite-v1:0';
 
     // Cognito User Poolの作成 - メールアドレスをユーザー名として使用するように設定
     const userPool = new cognito.UserPool(this, 'ChatbotUserPool', {
