@@ -1,25 +1,45 @@
+// frontend/src/App.js
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import { Amplify, Auth } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
+import axios from 'axios';
 import './App.css';
 
-// 環境変数から設定を読み込む
-const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT || 'YOUR_API_ENDPOINT';
-const USER_POOL_ID = process.env.REACT_APP_USER_POOL_ID || 'YOUR_USER_POOL_ID';
-const USER_POOL_CLIENT_ID = process.env.REACT_APP_USER_POOL_CLIENT_ID || 'YOUR_USER_POOL_CLIENT_ID';
-const REGION = process.env.REACT_APP_REGION || 'us-east-1';
+// 設定を読み込む関数
+const loadConfig = () => {
+  // ウィンドウオブジェクトから設定を取得
+  if (window.REACT_APP_CONFIG) {
+    return {
+      apiEndpoint: window.REACT_APP_CONFIG.apiEndpoint,
+      userPoolId: window.REACT_APP_CONFIG.userPoolId,
+      userPoolClientId: window.REACT_APP_CONFIG.userPoolClientId,
+      region: window.REACT_APP_CONFIG.region,
+    };
+  }
+  
+  // 環境変数から設定を取得（ローカル開発用）
+  return {
+    apiEndpoint: process.env.REACT_APP_API_ENDPOINT || 'YOUR_API_ENDPOINT',
+    userPoolId: process.env.REACT_APP_USER_POOL_ID || 'YOUR_USER_POOL_ID',
+    userPoolClientId: process.env.REACT_APP_USER_POOL_CLIENT_ID || 'YOUR_USER_POOL_CLIENT_ID',
+    region: process.env.REACT_APP_REGION || 'us-east-1',
+  };
+};
+
+// 設定を取得
+const config = loadConfig();
 
 // Amplify設定
 Amplify.configure({
   Auth: {
-    region: REGION,
-    userPoolId: USER_POOL_ID,
-    userPoolWebClientId: USER_POOL_CLIENT_ID,
+    region: config.region,
+    userPoolId: config.userPoolId,
+    userPoolWebClientId: config.userPoolClientId,
   },
 });
 
+// ChatInterfaceコンポーネントの定義
 function ChatInterface({ signOut, user }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -52,7 +72,7 @@ function ChatInterface({ signOut, user }) {
       const session = await Auth.currentSession();
       const idToken = session.getIdToken().getJwtToken();
 
-      const response = await axios.post(`${API_ENDPOINT}/chat`, {
+      const response = await axios.post(config.apiEndpoint, {
         message: userMessage,
         conversationHistory: messages
       }, {

@@ -61,34 +61,7 @@ npx cdk bootstrap
 npx cdk deploy
 ```
 
-デプロイが完了すると、以下の出力が表示されます：
-
-```
-CloudFront URL
-API Gateway URL
-Cognito User Pool ID
-Cognito User Pool Client ID
-使用している Bedrock モデル ID
-```
-
-### 5. フロントエンド環境変数の設定
-frontend/.env ファイルを編集して、デプロイ出力から得られた値を設定します：
-```
-REACT_APP_API_ENDPOINT=<API_Gateway_URL>
-REACT_APP_USER_POOL_ID=<User_Pool_ID>
-REACT_APP_USER_POOL_CLIENT_ID=<User_Pool_Client_ID>
-```
-
-### 6. フロントエンドの再ビルドとデプロイ
-```
-cd frontend
-npm run build
-cd ..
-npx cdk deploy
-```
-
-
-### 7. アプリケーションへのアクセス
+### 5. アプリケーションへのアクセス
 デプロイ出力に表示された CloudFront URL にアクセスしてアプリケーションを使用します。
 
 使用方法
@@ -110,11 +83,15 @@ new BedrockChatbotStack(app, 'BedrockChatbotStack', {
 });
 ```
 
+
 ### フロントエンドのカスタマイズ
 フロントエンドのコードは frontend/src ディレクトリにあります。React コンポーネントを編集してカスタマイズできます。
 
+
+
 ### クリーンアップ
-プロジェクトのリソースを削除するには：
+プロジェクトのリソースを削除するには以下のコマンドを実行します
+
 
 ```
 npx cdk destroy
